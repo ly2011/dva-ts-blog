@@ -1,12 +1,28 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import dva from 'dva'
+import createLoading from 'dva-loading'
+import { createBrowserHistory as createHistory } from 'history'
+import { message } from 'antd'
+import router from './router'
+import './index.less'
 
-ReactDOM.render(<App />, document.getElementById('root'));
+const app = dva({
+  history: createHistory(),
+  onStateChange() {
+    // window.__state__ = state
+  },
+  onError(error: any) {
+    console.error(`全局error: ${error}`)
+    message.error(`出错了: ${error}`)
+  }
+})
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+// 2. Plugins
+app.use(createLoading({ effects: true }))
+
+// 3. Model
+
+// 4.Router
+app.router(router)
+
+// 5. start
+app.start('#root')

@@ -1,26 +1,22 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import { connect } from 'dva'
+import { withRouter } from 'dva/router'
 
-const App: React.FC = () => {
+interface Props {
+  children: React.ReactNode
+  location: object
+  dispatch: Function
+  app: object
+  loading: Boolean
+}
+const App: React.FC = (props: any) => {
+  // console.log('app log ---> ', props)
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <header className="App-header" />
+      {props.children}
     </div>
-  );
+  )
 }
 
-export default App;
+export default withRouter(connect(({ app, loading }: Props) => ({ app, loading }))(App))
